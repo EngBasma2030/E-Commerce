@@ -23,5 +23,7 @@ namespace Persistence.Data
             modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
             modelBuilder.ApplyConfigurationsFromAssembly(typeof(AssemblyReference).Assembly); 
         }
+
+
     }
 }

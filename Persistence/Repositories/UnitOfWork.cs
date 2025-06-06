@@ -19,7 +19,7 @@ namespace Persistence.Repositories
             // Dic<string , object> => string Key [name of entity] , object => object from generic Repository of TEntity
 
             if (_repositories.ContainsKey(typeName))
-                return (IGenericRepository<TEntity,TKey>) _repositories[typeName];
+                return (IGenericRepository<TEntity, TKey>)_repositories[typeName];
 
             else
             {
@@ -38,3 +38,4 @@ namespace Persistence.Repositories
         }
     }
 }
+    
