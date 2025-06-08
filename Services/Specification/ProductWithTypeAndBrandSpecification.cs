@@ -1,5 +1,5 @@
 ﻿using Domain.Models;
-using Shared.DataTransferObject;
+using Shared.DataTransferObject.ProductModuleDTOS;
 using System;
 using System.Collections.Generic;
 using System.Linq;

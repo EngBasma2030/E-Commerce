@@ -1,5 +1,6 @@
 
 using Domain.Contracts;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Persistence;
 using Persistence.Data;
@@ -7,6 +8,7 @@ using Persistence.Repositories;
 using Services;
 using Services.MappingProfiles;
 using ServicesAbstraction;
+using Shared.ErrorModels;
 
 namespace E_Commerce
 {
@@ -19,20 +21,14 @@ namespace E_Commerce
             // Add services to the container.
 
             
-            builder.Services.AddDbContext<StoreDbContext>(options =>
-            {
-                var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
-                options.UseSqlServer(connectionString);
-            });
+           
             builder.Services.AddControllers();
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-            builder.Services.AddEndpointsApiExplorer();
-            builder.Services.AddSwaggerGen();
-            builder.Services.AddScoped<IDataSeeding, DataSeeding>();
-            builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
-            builder.Services.AddAutoMapper(typeof(ProductProfile).Assembly);
-            builder.Services.AddScoped<IServiceManager, ServiceManager>();
 
+            builder.Services.AddSwaggerServices();
+            builder.Services.AddInfrastructureServices(builder.Configuration);
+            builder.Services.AddApplicationServices();
+            builder.Services.AddWebApplicationServices();
             builder.Services.AddCors(options =>
             {
                 options.AddPolicy("AllowAll",
@@ -50,8 +46,7 @@ namespace E_Commerce
             var objectOfDataSeeding = scope.ServiceProvider.GetRequiredService<IDataSeeding>();
             objectOfDataSeeding.DataSeed();
 
-
-
+            app.UseMiddleware<CustomExceptionHandlerMiddleware>();
             // Configure the HTTP request pipeline.
          
             if (app.Environment.IsDevelopment())
