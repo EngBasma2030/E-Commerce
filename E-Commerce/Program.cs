@@ -26,9 +26,13 @@ namespace E_Commerce
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 
             builder.Services.AddSwaggerServices();
+
             builder.Services.AddInfrastructureServices(builder.Configuration);
             builder.Services.AddApplicationServices();
+
             builder.Services.AddWebApplicationServices();
+            builder.Services.AddJWTService(builder.Configuration);
+
             builder.Services.AddCors(options =>
             {
                 options.AddPolicy("AllowAll",
@@ -45,8 +49,11 @@ namespace E_Commerce
             using var scope = app.Services.CreateScope();
             var objectOfDataSeeding = scope.ServiceProvider.GetRequiredService<IDataSeeding>();
             objectOfDataSeeding.DataSeed();
+            objectOfDataSeeding.IdentityDataSeed();
 
             app.UseMiddleware<CustomExceptionHandlerMiddleware>();
+
+
             // Configure the HTTP request pipeline.
          
             if (app.Environment.IsDevelopment())
@@ -58,7 +65,9 @@ namespace E_Commerce
             app.UseCors("AllowAll");
 
             app.UseHttpsRedirection();
+            app.UseStaticFiles();
 
+            app.UseAuthentication(); 
             app.UseAuthorization();
 
 
