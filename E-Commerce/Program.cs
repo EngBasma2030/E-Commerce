@@ -32,7 +32,7 @@ namespace E_Commerce
 
             builder.Services.AddWebApplicationServices();
             builder.Services.AddJWTService(builder.Configuration);
-
+            builder.Services.AddAuthorization();
             builder.Services.AddCors(options =>
             {
                 options.AddPolicy("AllowAll",
